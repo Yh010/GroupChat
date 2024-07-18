@@ -21,11 +21,10 @@ Watch the video demo [here](https://www.loom.com/share/87a64fcc5acb4545b12e48488
    ```sh
    git clone https://github.com/your-username/group-chat.git
    cd group-chat
-2. **start backend:**:
-   ```sh
-  cd backend 
-  nodemon src/index.ts
-3. **start frontend on multiple tabs after running**:
-   ```sh
-   npm run dev
+2. **start backend: cd backend && nodemon src/index.ts**:
+   
+3. **start frontend on multiple tabs after running npm run dev**:
+
+   
+ 
 
