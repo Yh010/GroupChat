@@ -4,6 +4,7 @@ const WebSocketClient: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [input, setInput] = useState<string>("");
   const [username, setUsername] = useState<string | null>(null);
+  const [room, setRoom] = useState<string | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -43,6 +44,14 @@ const WebSocketClient: React.FC = () => {
     }
   };
 
+  const handleJoinRoom = () => {
+    if (input.trim() !== "" && socketRef.current) {
+      socketRef.current.send(`/join ${input}`);
+      setRoom(input);
+      setInput("");
+    }
+  };
+
   return (
     <div>
       <h1>WebSocket Client</h1>
@@ -51,10 +60,14 @@ const WebSocketClient: React.FC = () => {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Type a message or /setname <username>"
+          placeholder="Type a message or command"
         />
-        <button onClick={username ? sendMessage : handleSetUsername}>
-          {username ? "Send Message" : "Set Username"}
+        <button
+          onClick={
+            username ? (room ? sendMessage : handleJoinRoom) : handleSetUsername
+          }
+        >
+          {username ? (room ? "Send Message" : "Join Room") : "Set Username"}
         </button>
       </div>
       <div>
