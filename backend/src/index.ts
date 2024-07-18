@@ -21,7 +21,7 @@ server.on('connection', (socket: WebSocket) => {
   const newUser: User = { socket, username: `User${clients.length + 1}`, room: null };
   clients.push(newUser);
 
-  socket.send('Welcome to the group chat server! Please set your username using the /setname command and join a room using the /join <room_name> command.');
+  socket.send('Welcome to the group chat server! Please set your username, then join a room and start chatting with your friends!');
 
   socket.on('message', (data) => {
     const message = data.toString();
@@ -60,7 +60,7 @@ server.on('connection', (socket: WebSocket) => {
         });
       }
     } else {
-      socket.send('You need to join a room first using the /join <room_name> command.');
+      socket.send('You need to join a room first!');
     }
   });
 

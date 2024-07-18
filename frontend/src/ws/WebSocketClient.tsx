@@ -54,7 +54,7 @@ const WebSocketClient: React.FC = () => {
 
   return (
     <div>
-      <h1>WebSocket Client</h1>
+      <h1>Simple Group chat web app using websockets</h1>
       <div>
         <input
           type="text"
