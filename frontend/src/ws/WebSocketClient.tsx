@@ -1,20 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const WebSocketClient: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [input, setInput] = useState<string>("");
+  const [username, setUsername] = useState<string | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
     socketRef.current = new WebSocket("ws://localhost:8080");
 
     socketRef.current.onopen = () => {
-      console.log("Connected to Group chat server");
+      console.log("Connected to the WebSocket server");
     };
 
     socketRef.current.onmessage = (event) => {
-      setMessages((prevMessage) => [...prevMessage, event.data]);
+      setMessages((prevMessages) => [...prevMessages, event.data]);
     };
+
     socketRef.current.onclose = () => {
       console.log("Disconnected from the WebSocket server");
     };
@@ -32,6 +34,15 @@ const WebSocketClient: React.FC = () => {
       setInput("");
     }
   };
+
+  const handleSetUsername = () => {
+    if (input.trim() !== "" && socketRef.current) {
+      socketRef.current.send(`/setname ${input}`);
+      setUsername(input);
+      setInput("");
+    }
+  };
+
   return (
     <div>
       <h1>WebSocket Client</h1>
@@ -40,9 +51,11 @@ const WebSocketClient: React.FC = () => {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Type a message"
+          placeholder="Type a message or /setname <username>"
         />
-        <button onClick={sendMessage}>Send</button>
+        <button onClick={username ? sendMessage : handleSetUsername}>
+          {username ? "Send Message" : "Set Username"}
+        </button>
       </div>
       <div>
         <h2>Messages</h2>
